@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>Chat Application</title>
+  <link rel="icon" href="assets/images/favicon.ico" type="image/gif" sizes="16x16">
+  <link rel='stylesheet' href='style.css' type='text/css' />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+  <script src="chat.js"></script>
+</head>
+
+<body>
+  <div class="onlineUsersContainer">
+    <div class="userInfo">Welcome <label id="myName">Guest</label> !!</div>
+    <div class="onlineUsersWraper">
+      <ul id="onlineUsers"></ul>
+    </div>
+  </div>
+  <div class="chatContainer">
+    <ul id="messages"></ul>
+    <span id="notifyTyping"></span>
+    <form id="form" action="" onsubmit="event.preventDefault(); return submitfunction();">
+      <input id="txtChatMessage" autocomplete="off" onkeyup="notifyTyping();" placeholder="Type yor message here.." />
+      <input type="submit" id="btnChatMessage" value="Send" />
+      <input type="image" id="imgAttachment" src="/assets/images/if_31_486131.png" width="30px" />
+      <input type="file" id="fileAttachment" />
+    </form>
+  </div>
+</body>
+
+</html>

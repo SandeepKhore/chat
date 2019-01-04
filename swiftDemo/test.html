@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Chat Application</title>
+    <link rel="icon" href="assets/images/favicon.ico" type="image/gif" sizes="16x16">
+    <link rel='stylesheet' href='style.css' type='text/css' />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+    <script>
+        var socket = io();
+        var allChatMessages = [];
+        var chatNotificationCount = [];
+        var myUser = {};
+        var myFriend = {};
+        $(document).ready(function () {
+            loginMe();
+        })
+
+        function loginMe() {
+            var person = prompt("Please enter your name:", "Sandeep Khore");
+            if (/([^\s])/.test(person) && person != null && person != "") {
+                //$('#user').val(person);
+                // socket.emit('newUser', person);
+                // document.title = person;
+                $.ajax({
+                    url: `/checkUser/${person}`,
+                    type: "GET",
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        if (response) {
+                            myUser = response;
+                        } else {
+                            throw 'Unable to get user';
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorMessage) {
+                        alert('Unable to get user: ' + errorMessage); // Optional
+                    }
+                });
+            } else {
+                location.reload();
+            }
+        }
+
+        // Function to be called when sent a message from chatbox
+        function submitfunction() {
+            debugger;
+            var message = {};
+            text = $('#txtChatMessage').val();
+
+            if (text != '') {
+                message.type = 'text';
+                message.text = text;
+                message.sender = myUser[0]._id;
+                message.receiver = myFriend.id;
+                // Function call to send attached file to sender/seceiver in chatbox
+                // appendSendersChatboxMessage(message);
+                socket.emit(myUser[0]._id, message);
+            }
+
+            $('#txtChatMessage').val('').focus();
+        }
+    </script>
+</head>
+
+<body>
+    <div class="chatContainer">
+        <ul id="messages"></ul>
+        <form id="form" action="" onsubmit="event.preventDefault(); return submitfunction();">
+            <input id="txtChatMessage" autocomplete="off" placeholder="Type yor message here.." />
+            <input type="submit" id="btnChatMessage" value="Send" />
+        </form>
+    </div>
+</body>
+
+</html>
